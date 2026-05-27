@@ -167,7 +167,7 @@ export default function CameraModel({
           anchorX="center"
           anchorY="middle"
           maxWidth={1.8}
-          font="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hjQ.woff2"
+          font="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
         >
           {camera.name}
         </Text>
@@ -182,7 +182,7 @@ export default function CameraModel({
               anchorX="center"
               anchorY="middle"
               maxWidth={1.8}
-              font="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hjQ.woff2"
+              font="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
             >
               {camera.type} · {camera.sensor}
             </Text>
@@ -193,7 +193,7 @@ export default function CameraModel({
               anchorX="center"
               anchorY="middle"
               maxWidth={1.8}
-              font="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hjQ.woff2"
+              font="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2"
             >
               {camera.description}
             </Text>
