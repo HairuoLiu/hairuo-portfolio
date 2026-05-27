@@ -1,11 +1,12 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text, RoundedBox } from "@react-three/drei";
+import { Text, RoundedBox, Html } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
 import * as THREE from "three";
 import gsap from "gsap";
 import { Camera } from "../data/cameras";
 import { brandColors } from "../data/photos";
+import { cameraIcons } from "../data/cameraIcons";
 
 interface CameraModelProps {
   camera: Camera;
@@ -25,32 +26,9 @@ export default function CameraModel({
   const groupRef = useRef<THREE.Group>(null);
   const innerRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
-  const [texture, setTexture] = useState<THREE.Texture | null>(null);
   const [entryComplete, setEntryComplete] = useState(false);
 
   const brandColor = brandColors[camera.id] || "#e2231a";
-
-  /** Load camera image texture */
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    loader.load(
-      camera.coverImage,
-      (tex) => {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        tex.minFilter = THREE.LinearFilter;
-        tex.magFilter = THREE.LinearFilter;
-        setTexture(tex);
-      },
-      undefined,
-      () => {
-        // Silently fail — gradient fallback will be used
-      }
-    );
-    return () => {
-      if (texture) texture.dispose();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [camera.coverImage]);
 
   /** GSAP entrance animation */
   useEffect(() => {
@@ -119,9 +97,6 @@ export default function CameraModel({
   const handlePointerOver = useCallback(() => setHovered(true), []);
   const handlePointerOut = useCallback(() => setHovered(false), []);
 
-  /** Create gradient-like fallback material color */
-  const fallbackColor = new THREE.Color(brandColor);
-
   return (
     <group ref={groupRef}>
       <AnimatedGroup
@@ -146,32 +121,28 @@ export default function CameraModel({
           />
         </RoundedBox>
 
-        {/* Camera image or gradient card */}
-        <mesh
-          position={[0, 0.06, 0.04]}
-          onClick={onClick}
-          onPointerOver={handlePointerOver}
-          onPointerOut={handlePointerOut}
+        {/* Camera SVG icon via Html overlay */}
+        <Html
+          transform
+          occlude={false}
+          position={[0, 0.06, 0.05]}
         >
-          <planeGeometry args={[1.8, 1.0]} />
-          {texture ? (
-            <meshStandardMaterial
-              map={texture}
-              roughness={0.4}
-              metalness={0.05}
-            />
-          ) : (
-            <meshStandardMaterial
-              color={fallbackColor}
-              roughness={0.5}
-              metalness={0.1}
-              emissive={fallbackColor}
-              emissiveIntensity={0.08}
-            />
-          )}
-        </mesh>
+          <div
+            style={{
+              width: "180px",
+              height: "100px",
+              borderRadius: "4px",
+              overflow: "hidden",
+              background: "#0f0f0f",
+              pointerEvents: "none",
+            }}
+            dangerouslySetInnerHTML={{
+              __html: cameraIcons[camera.id] || "",
+            }}
+          />
+        </Html>
 
-        {/* Brand dot — Leica red circle */}
+        {/* Brand dot — Leica red / Sony orange / Fuji green circle */}
         <mesh position={[0.78, 0.52, 0.041]}>
           <circleGeometry args={[0.045, 32]} />
           <meshBasicMaterial color={brandColor} />
